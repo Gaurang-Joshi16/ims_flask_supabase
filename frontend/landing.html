@@ -635,19 +635,16 @@
   </head>
   <body>
     <!-- Header & Navigation -->
-    <header>
+    <header >
       <div class="container">
         <nav>
-          <div class="logo">
+          <div class="logo"><a href="#hero" style="text-decoration: none; color: #2563eb`;"`>
             <i class="fas fa-industry"></i>
-            <span>IndustryPro</span>
+            <span>IndustryPro</span></a>
           </div>
           <ul class="nav-links">
-            <li><a href="login.html">Machinery</a></li>
-            <li><a href="login.html">Inventory</a></li>
-            <li><a href="login.html">Employees</a></li>
-            <li><a href="login.html">Features</a></li>
-            <li><a href="login.html">Contact</a></li>
+            <li><a href="#machinery">Features</a></li>
+            <li><a href="#footer">Contact</a></li>
           </ul>
           <div class="auth-buttons">
             <a href="login.html" class="btn btn-outline">Login</a>
@@ -658,7 +655,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="hero">
       <div class="container">
         <div class="hero-content animated">
           <h1>Streamline Your Industrial Operations</h1>
@@ -838,7 +835,7 @@
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer id="footer">
       <div class="container">
         <div class="footer-content">
           <div class="footer-column">
@@ -1123,32 +1120,6 @@
           observer.observe(el);
         });
       });
-          // Initialize Supabase client
-      const { createClient } = supabase;
-      const supabaseUrl = "https://nerzmbcilthokuyqmtwj.supabase.co"; // <-- replace with your Supabase project URL
-      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lcnptYmNpbHRob2t1eXFtdHdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4MDUzMjEsImV4cCI6MjA3MTM4MTMyMX0.HBou9bR3fezEuklwXmgH7cMLMwzPXH-ndm325TbkTIM"; // <-- replace with your anon/public key
-      const client = createClient(supabaseUrl, supabaseKey);
-
-      // Check if user is logged in
-      async function checkUser() {
-        const { data, error } = await client.auth.getUser();
-        if (data?.user) {
-          const email = data.user.email;
-          document.getElementById("auth-area").innerHTML = `
-            <div style="display:flex;align-items:center;gap:1rem;">
-              <span style="font-weight:600;color:#1e293b;">Hello, ${email}</span>
-              <button onclick="logout()" class="btn btn-outline">Logout</button>
-            </div>
-          `;
-        }
-      }
-
-      async function logout() {
-        await client.auth.signOut();
-        location.reload();
-      }
-
-      checkUser();
     </script>
   </body>
 </html>
