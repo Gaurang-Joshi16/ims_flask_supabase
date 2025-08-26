@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IndustryPro | Industrial Management System</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --secondary: #10b981;
+        --accent: #f59e0b;
+        --light: #fcf9f8;
+        --dark: #1e293b;
+        --gray: #64748b;
+        --light-gray: #f0e3e2;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        color: var(--dark);
+        line-height: 1.6;
+        background-color: beige;
+        font-family: "Roboto", sans-serif;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5 {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header & Navigation */
+      header {
+        background-color: white;
+        color: var(--dark);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        margin-right: 10px;
+        color: var(--primary);
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+      }
+
+      .nav-links li {
+        margin-left: 2rem;
+      }
+
+      .nav-links a {
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+        position: relative;
+      }
+
+      .nav-links a:after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: width 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: var(--primary);
+      }
+
+      .nav-links a:hover:after {
+        width: 100%;
+      }
+
+      .auth-buttons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 0.8rem 1.5rem;
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+      }
+
+      .btn:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(37, 99, 235, 0.25);
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+      }
+
+      .btn-outline:hover {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .btn-accent {
+        background-color: var(--accent);
+        box-shadow: 0 4px 6px rgba(245, 158, 11, 0.2);
+      }
+
+      .btn-accent:hover {
+        background-color: #e5900b;
+        box-shadow: 0 6px 12px rgba(245, 158, 11, 0.25);
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.9) 0%,
+            rgba(16, 185, 129, 0.85) 100%
+          ),
+          url("https://images.unsplash.com/photo-1590065480004-477ef6d4d5de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 6rem 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero h1 {
+        font-size: 3.2rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        margin: 0 auto 2.5rem;
+        max-width: 600px;
+      }
+
+      .hero-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      /* Dashboard Sections */
+      .section-title {
+        text-align: center;
+        margin: 5rem 0 3rem;
+        color: var(--dark);
+        position: relative;
+      }
+
+      .section-title:after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        margin: 15px auto;
+        border-radius: 2px;
+      }
+
+      .dashboard {
+        background: white;
+        border-radius: 12px;
+        padding: 2.5rem;
+        margin-bottom: 4rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid var(--light-gray);
+      }
+
+      .dashboard:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .dashboard-title {
+        font-size: 1.8rem;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .dashboard-icon {
+        font-size: 2rem;
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .dashboard-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .feature-card {
+        background: var(--light);
+        border-radius: 10px;
+        padding: 1.8rem;
+        transition: all 0.3s;
+        border-left: 4px solid var(--primary);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .feature-card:hover:before {
+        transform: scaleX(1);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1.2rem;
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .feature-title {
+        font-size: 1.3rem;
+        margin-bottom: 0.8rem;
+        color: var(--dark);
+      }
+
+      .feature-card p {
+        color: var(--gray);
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+      }
+
+      .interactive-demo {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--light-gray);
+      }
+
+      .demo-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--light-gray);
+      }
+
+      .demo-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--dark);
+      }
+
+      .demo-controls {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .demo-btn {
+        padding: 0.4rem 0.8rem;
+        background: var(--light);
+        border: 1px solid var(--light-gray);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+      }
+
+      .demo-btn:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      .demo-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      .demo-panel {
+        background: var(--light);
+        border-radius: 6px;
+        padding: 1rem;
+        min-height: 120px;
+      }
+
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem;
+      }
+
+      .status-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+      }
+
+      .status-active {
+        background: var(--secondary);
+      }
+
+      .status-inactive {
+        background: var(--gray);
+      }
+
+      .status-maintenance {
+        background: var(--accent);
+      }
+
+      .progress-bar {
+        height: 8px;
+        background: var(--light-gray);
+        border-radius: 4px;
+        overflow: hidden;
+        margin: 0.8rem 0;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        border-radius: 4px;
+        width: 0;
+        transition: width 1s ease-in-out;
+      }
+
+      /* CTA Section */
+      .cta {
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--primary-dark) 100%
+        );
+        color: white;
+        text-align: center;
+        padding: 5rem 0;
+        border-radius: 12px;
+        margin: 5rem 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta:before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        transform: rotate(30deg);
+      }
+
+      .cta-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .cta h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .cta p {
+        max-width: 700px;
+        margin: 0 auto 2.5rem;
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--dark);
+        color: white;
+        padding: 4rem 0 2rem;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .footer-column h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+
+      .footer-column h3:after {
+        content: "";
+        display: block;
+        width: 40px;
+        height: 3px;
+        background: var(--primary);
+        margin-top: 8px;
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.8rem;
+      }
+
+      .footer-links a {
+        color: #cbd5e1;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .footer-links a:hover {
+        color: var(--primary);
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .social-links a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+
+      .social-links a:hover {
+        background: var(--primary);
+        transform: translateY(-3px);
+      }
+
+      .copyright {
+        text-align: center;
+        padding-top: 2.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 0.9rem;
+        color: #94a3b8;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .dashboard-header {
+          flex-direction: column;
+          text-align: center;
+          gap: 1.5rem;
+        }
+
+        .auth-buttons {
+          display: none;
+        }
+
+        .mobile-auth {
+          display: flex;
+          gap: 1rem;
+          margin-top: 2rem;
+          justify-content: center;
+        }
+
+        .demo-content {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Mobile auth buttons */
+      .mobile-auth {
+        display: none;
+      }
+
+      /* Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animated {
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+
+      .delay-1 {
+        animation-delay: 0.2s;
+      }
+      .delay-2 {
+        animation-delay: 0.4s;
+      }
+      .delay-3 {
+        animation-delay: 0.6s;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header & Navigation -->
+    <header>
+      <div class="container">
+        <nav>
+          <div class="logo">
+            <i class="fas fa-industry"></i>
+            <span>IndustryPro</span>
+          </div>
+          <ul class="nav-links">
+            <li><a href="login.html">Machinery</a></li>
+            <li><a href="login.html">Inventory</a></li>
+            <li><a href="login.html">Employees</a></li>
+            <li><a href="login.html">Features</a></li>
+            <li><a href="login.html">Contact</a></li>
+          </ul>
+          <div class="auth-buttons">
+            <a href="login.html" class="btn btn-outline">Login</a>
+            <a href="signup.html" class="btn">Sign Up</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content animated">
+          <h1>Streamline Your Industrial Operations</h1>
+          <p>
+            IndustryPro is a comprehensive management system designed to
+            optimize your machinery, inventory, and workforce in one powerful
+            platform.
+          </p>
+          <div class="hero-buttons">
+            <a href="signup.html" class="btn btn-accent">Get Started Free</a>
+            <a href="#machinery" class="btn btn-outline">Learn More</a>
+          </div>
+        </div>
+        <div class="mobile-auth">
+          <a href="#login" class="btn btn-outline">Login</a>
+          <a href="#signup" class="btn">Sign Up</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Machinery Dashboard Section -->
+    <section id="machinery" class="container">
+      <h2 class="section-title animated">Machinery Dashboard</h2>
+      <div class="dashboard animated delay-1">
+        <div class="dashboard-header">
+          <h3 class="dashboard-title">
+            <i class="fas fa-cogs dashboard-icon"></i>
+            Manage All Equipment in One Place
+          </h3>
+          <a href="login.html" class="btn">Access Dashboard</a>
+        </div>
+        <div class="dashboard-content">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-cogs"></i>
+            </div>
+            <h4 class="feature-title">Complete Machine Overview</h4>
+            <p>
+              Monitor all your machinery in real-time with status indicators,
+              performance metrics, and maintenance schedules.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-tasks"></i>
+            </div>
+            <h4 class="feature-title">Task Management</h4>
+            <p>
+              Assign products and employees to specific machines, track
+              progress, and optimize production workflows.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-toolbox"></i>
+            </div>
+            <h4 class="feature-title">Maintenance Scheduling</h4>
+            <p>
+              Plan and track maintenance activities, receive alerts for upcoming
+              services, and reduce unexpected downtime.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inventory & Orders Dashboard Section -->
+    <section id="inventory" class="container">
+      <h2 class="section-title animated">Inventory & Orders Dashboard</h2>
+      <div class="dashboard animated delay-2">
+        <div class="dashboard-header">
+          <h3 class="dashboard-title">
+            <i class="fas fa-boxes dashboard-icon"></i>
+            Optimize Your Supply Chain
+          </h3>
+          <a href="login.html" class="btn">Access Dashboard</a>
+        </div>
+        <div class="dashboard-content">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-boxes"></i>
+            </div>
+            <h4 class="feature-title">Product Management</h4>
+            <p>
+              Track all products with detailed information including cost price,
+              sell price, and profit margins.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-warehouse"></i>
+            </div>
+            <h4 class="feature-title">Batch Tracking</h4>
+            <p>
+              Monitor inventory batch-by-batch with expiration dates, quality
+              control status, and storage conditions.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <h4 class="feature-title">Order Management</h4>
+            <p>
+              Manage current orders, track rejected orders, and analyze past
+              completed orders for insights.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Employee Dashboard Section -->
+    <section id="employee" class="container">
+      <h2 class="section-title animated">Salary & Employee Dashboard</h2>
+      <div class="dashboard animated delay-3">
+        <div class="dashboard-header">
+          <h3 class="dashboard-title">
+            <i class="fas fa-users dashboard-icon"></i>
+            Manage Your Workforce Efficiently
+          </h3>
+          <a href="login.html" class="btn">Access Dashboard</a>
+        </div>
+        <div class="dashboard-content">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h4 class="feature-title">Employee Directory</h4>
+            <p>
+              Access complete employee information, roles, departments, and
+              contact details in one centralized system.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-clipboard-check"></i>
+            </div>
+            <h4 class="feature-title">Task Management</h4>
+            <p>
+              Assign tasks to employees, track completion status, and monitor
+              productivity across your organization.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-money-check-alt"></i>
+            </div>
+            <h4 class="feature-title">Payroll Management</h4>
+            <p>
+              Calculate salaries, manage payroll processing, and generate
+              comprehensive reports for accounting.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="container">
+      <div class="cta">
+        <div class="cta-content">
+          <h2>Ready to Transform Your Industrial Management?</h2>
+          <p>
+            Join hundreds of manufacturers who have optimized their operations
+            with IndustryPro. Get started with a free account today.
+          </p>
+          <a href="signup.html" class="btn btn-accent">Create Free Account</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-column">
+            <h3>IndustryPro</h3>
+            <p>
+              Comprehensive industrial management system for modern
+              manufacturing operations.
+            </p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+          <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="#machinery">Machinery Dashboard</a></li>
+              <li><a href="#inventory">Inventory & Orders</a></li>
+              <li><a href="#employee">Employee Management</a></li>
+              <li><a href="#features">Features</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Account</h3>
+            <ul class="footer-links">
+              <li><a href="#login.html">Login</a></li>
+              <li><a href="signup.html">Sign Up</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Contact Us</h3>
+            <ul class="footer-links">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> Pimpri Chinchwad College
+                of Engineering, MQ37+M3C, निगडी मार्ग, near Akurdi Railway
+                Station Road, Sector No. 26, Pradhikaran, Nigdi,
+                Pimpri-Chinchwad, Maharashtra 411044, India
+              </li>
+              <li><i class="fas fa-phone"></i> +91 9168281183</li>
+              <li><i class="fas fa-envelope"></i> teamatr@gmail.com</li>
+            </ul>
+          </div>
+        </div>
+        <div class="copyright">
+          <p>&copy; 2023 IndustryPro. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Interactive JavaScript functions
+      function updateMachineStatus() {
+        document.getElementById("active-machines").textContent =
+          Math.floor(Math.random() * 10) + 20;
+        document.getElementById("inactive-machines").textContent =
+          Math.floor(Math.random() * 5) + 1;
+        document.getElementById("maintenance-machines").textContent =
+          Math.floor(Math.random() * 5) + 1;
+
+        const efficiency = Math.floor(Math.random() * 10) + 75;
+        document.getElementById("efficiency-bar").style.width =
+          efficiency + "%";
+
+        const uptime = Math.floor(Math.random() * 10) + 85;
+        document.getElementById("uptime-bar").style.width = uptime + "%";
+
+        showNotification("Machine status updated successfully!");
+      }
+
+      function assignTask() {
+        document.getElementById("current-tasks").textContent =
+          Math.floor(Math.random() * 5) + 10;
+        document.getElementById("completed-tasks").textContent =
+          Math.floor(Math.random() * 5) + 5;
+
+        const progress = Math.floor(Math.random() * 20) + 60;
+        document.getElementById("task-progress").style.width = progress + "%";
+
+        document.getElementById("high-priority").textContent =
+          Math.floor(Math.random() * 3) + 2;
+        document.getElementById("medium-priority").textContent =
+          Math.floor(Math.random() * 4) + 3;
+        document.getElementById("low-priority").textContent =
+          Math.floor(Math.random() * 3) + 2;
+
+        showNotification("New task assigned successfully!");
+      }
+
+      function scheduleMaintenance() {
+        document.getElementById("week-maintenance").textContent =
+          Math.floor(Math.random() * 3) + 1;
+        document.getElementById("month-maintenance").textContent =
+          Math.floor(Math.random() * 5) + 5;
+
+        const maintenanceRate = Math.floor(Math.random() * 10) + 80;
+        document.getElementById("maintenance-bar").style.width =
+          maintenanceRate + "%";
+        document.getElementById("ontime-rate").textContent =
+          maintenanceRate + "%";
+
+        showNotification("Maintenance scheduled successfully!");
+      }
+
+      function addProduct() {
+        document.getElementById("total-products").textContent =
+          Math.floor(Math.random() * 20) + 140;
+        document.getElementById("low-stock").textContent =
+          Math.floor(Math.random() * 5) + 3;
+        document.getElementById("out-of-stock").textContent = Math.floor(
+          Math.random() * 3
+        );
+
+        const inventoryLevel = Math.floor(Math.random() * 20) + 70;
+        document.getElementById("inventory-bar").style.width =
+          inventoryLevel + "%";
+
+        showNotification("New product added successfully!");
+      }
+
+      function checkBatches() {
+        document.getElementById("active-batches").textContent =
+          Math.floor(Math.random() * 10) + 20;
+        document.getElementById("good-batches").textContent =
+          Math.floor(Math.random() * 5) + 18;
+        document.getElementById("attention-batches").textContent =
+          Math.floor(Math.random() * 4) + 1;
+
+        const qcRate = Math.floor(Math.random() * 10) + 85;
+        document.getElementById("qc-bar").style.width = qcRate + "%";
+
+        document.getElementById("expiring-batches").textContent =
+          Math.floor(Math.random() * 5) + 1;
+
+        showNotification("Batch check completed successfully!");
+      }
+
+      function processOrders() {
+        document.getElementById("current-orders").textContent =
+          Math.floor(Math.random() * 10) + 15;
+        document.getElementById("processing-orders").textContent =
+          Math.floor(Math.random() * 8) + 8;
+        document.getElementById("pending-orders").textContent =
+          Math.floor(Math.random() * 5) + 3;
+
+        const orderRate = Math.floor(Math.random() * 10) + 80;
+        document.getElementById("order-bar").style.width = orderRate + "%";
+
+        const rejectionRate = (Math.random() * 2).toFixed(1);
+        document.getElementById("rejection-rate").textContent =
+          rejectionRate + "%";
+
+        showNotification("Orders processed successfully!");
+      }
+
+      function addEmployee() {
+        document.getElementById("total-employees").textContent =
+          Math.floor(Math.random() * 10) + 80;
+        document.getElementById("active-employees").textContent =
+          Math.floor(Math.random() * 8) + 72;
+        document.getElementById("leave-employees").textContent =
+          Math.floor(Math.random() * 5) + 3;
+
+        document.getElementById("production-employees").textContent =
+          Math.floor(Math.random() * 10) + 35;
+        document.getElementById("management-employees").textContent =
+          Math.floor(Math.random() * 5) + 8;
+        document.getElementById("support-employees").textContent =
+          Math.floor(Math.random() * 8) + 25;
+
+        showNotification("New employee added successfully!");
+      }
+
+      function assignEmployeeTask() {
+        document.getElementById("week-tasks").textContent =
+          Math.floor(Math.random() * 20) + 110;
+        document.getElementById("completed-employee-tasks").textContent =
+          Math.floor(Math.random() * 15) + 85;
+
+        const taskRate = Math.floor(Math.random() * 15) + 70;
+        document.getElementById("employee-task-bar").style.width =
+          taskRate + "%";
+
+        document.getElementById("avg-completion").textContent =
+          (Math.random() + 2).toFixed(1) + " days";
+        document.getElementById("quality-score").textContent =
+          (Math.random() + 8).toFixed(1) + "/10";
+        document.getElementById("overtime-hours").textContent =
+          Math.floor(Math.random() * 10) + 20;
+
+        showNotification("Task assigned to employee successfully!");
+      }
+
+      function processPayroll() {
+        document.getElementById("monthly-payroll").textContent =
+          "$" + (Math.floor(Math.random() * 20000) + 180000).toLocaleString();
+        document.getElementById("avg-salary").textContent =
+          "$" + (Math.floor(Math.random() * 1000) + 4000).toLocaleString();
+        document.getElementById("tax-amount").textContent =
+          "$" + (Math.floor(Math.random() * 10000) + 35000).toLocaleString();
+
+        document.getElementById("processed-payments").textContent =
+          Math.floor(Math.random() * 10) + 70;
+        document.getElementById("pending-payments").textContent =
+          Math.floor(Math.random() * 5) + 3;
+
+        const payrollRate = Math.floor(Math.random() * 10) + 85;
+        document.getElementById("payroll-bar").style.width = payrollRate + "%";
+
+        showNotification("Payroll processed successfully!");
+      }
+
+      function showNotification(message) {
+        // Create notification element
+        const notification = document.createElement("div");
+        notification.textContent = message;
+        notification.style.position = "fixed";
+        notification.style.bottom = "20px";
+        notification.style.right = "20px";
+        notification.style.backgroundColor = "var(--primary)";
+        notification.style.color = "white";
+        notification.style.padding = "12px 20px";
+        notification.style.borderRadius = "6px";
+        notification.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+        notification.style.zIndex = "1000";
+        notification.style.opacity = "0";
+        notification.style.transition = "opacity 0.3s";
+
+        document.body.appendChild(notification);
+
+        // Fade in
+        setTimeout(() => {
+          notification.style.opacity = "1";
+        }, 10);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+          notification.style.opacity = "0";
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 300);
+        }, 3000);
+      }
+
+      // Initialize interactive elements
+      document.addEventListener("DOMContentLoaded", function () {
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+
+        // Add animation classes on scroll
+        const animatedElements = document.querySelectorAll(
+          ".section-title, .dashboard"
+        );
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("animated");
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        animatedElements.forEach((el) => {
+          observer.observe(el);
+        });
+      });
+          // Initialize Supabase client
+      const { createClient } = supabase;
+      const supabaseUrl = "https://nerzmbcilthokuyqmtwj.supabase.co"; // <-- replace with your Supabase project URL
+      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lcnptYmNpbHRob2t1eXFtdHdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4MDUzMjEsImV4cCI6MjA3MTM4MTMyMX0.HBou9bR3fezEuklwXmgH7cMLMwzPXH-ndm325TbkTIM"; // <-- replace with your anon/public key
+      const client = createClient(supabaseUrl, supabaseKey);
+
+      // Check if user is logged in
+      async function checkUser() {
+        const { data, error } = await client.auth.getUser();
+        if (data?.user) {
+          const email = data.user.email;
+          document.getElementById("auth-area").innerHTML = `
+            <div style="display:flex;align-items:center;gap:1rem;">
+              <span style="font-weight:600;color:#1e293b;">Hello, ${email}</span>
+              <button onclick="logout()" class="btn btn-outline">Logout</button>
+            </div>
+          `;
+        }
+      }
+
+      async function logout() {
+        await client.auth.signOut();
+        location.reload();
+      }
+
+      checkUser();
+    </script>
+  </body>
+</html>

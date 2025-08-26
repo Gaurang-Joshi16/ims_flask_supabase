@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Machines — IMS</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+    header.nav {
+      background: #333;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .brand { font-size: 1.5em; }
+    .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; }
+    .btn.accent { background-color: #007bff; color: #fff; }
+    .btn.ghost { background-color: transparent; color: #fff; border: 1px solid #fff; }
+    main {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      height: calc(100% - 60px);
+      overflow-y: auto;
+    }
+    .add-btn { margin-bottom: 15px; align-self: flex-start; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
+      width: 100%;
+    }
+    .card {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      background: #fff;
+      cursor: pointer;
+      transition: 0.3s all;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      height: 180px;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+    .card img {
+      width: 100%;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .card-details { display: flex; flex-direction: column; gap: 3px; font-size: 0.9em; }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 700px;
+      width: 95%;
+      max-height: 90%;
+      overflow-y: auto;
+      position: relative;
+      text-align: center;
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .close-btn { cursor: pointer; font-size: 1.2em; font-weight: bold; }
+    input, select, textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    textarea { resize: vertical; }
+    .machine-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+    }
+    .machine-card {
+      width: 220px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      background: #fff;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .machine-card:hover {
+      transform: scale(1.05);
+    }
+    .machine-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      width: 600px;
+      max-width: 95%;
+    }
+    .close {
+      float: right;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="brand">IMS — Machines</div>
+    <a class="btn ghost" href="employee_dashboard.html">Back</a>
+  </header>
+
+  <main>
+    <button class="btn accent add-btn" onclick="document.getElementById('addModal').style.display='flex'">
+      Add Machine
+    </button>
+    <div id="machine-list" class="cards"></div>
+  </main>
+
+  <!-- Add Machine Modal -->
+  <div id="addModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add Machine</h2>
+        <span class="close-btn" onclick="closeModal('addModal')">&times;</span>
+      </div>
+      <form onsubmit="addMachine(event)">
+        <input id="name" type="text" placeholder="Machine Name" required />
+        <input id="type" type="text" placeholder="Machine Type" required />
+        <select id="status">
+          <option>Available</option>
+          <option>In Use</option>
+          <option>Under Maintenance</option>
+        </select>
+        <input id="location" type="text" placeholder="Location" />
+        <textarea id="description" placeholder="Description"></textarea>
+        <input id="image_url" type="text" placeholder="Image URL" />
+        <button class="btn accent" type="submit">Add</button>
+      </form>
+    </div>
+  </div>
+  <div class="container">
+    <h1>Available Machines</h1>
+    <div class="machine-cards" id="machineList"></div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="machineModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <img id="modalImage" src="" alt="" style="width:100%; height:200px; object-fit:cover; border-radius:8px; margin:10px 0;">
+      <p id="modalDescription"></p>
+      <canvas id="machineChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    async function loadMachines() {
+      const res = await fetch("http://127.0.0.1:5000/machines");
+      const machines = await res.json();
+      const container = document.getElementById("machine-list");
+      container.innerHTML = "";
+
+      if (!machines || machines.length === 0) {
+        container.innerHTML = "<p>No machines added yet.</p>";
+        return;
+      }
+
+      machines.forEach(m => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const image = document.createElement("img");
+        image.src = m.image_url || "https://via.placeholder.com/220x80?text=Machine";
+        image.alt = "Machine Image";
+
+        const details = document.createElement("div");
+        details.className = "card-details";
+        details.innerHTML = `
+          <strong>${m.name}</strong>
+          <span>Type: ${m.type}</span>
+          <span>Status: ${m.status}</span>
+          <span>Location: ${m.location || "N/A"}</span>
+        `;
+
+        card.appendChild(image);
+        card.appendChild(details);
+
+        card.addEventListener("click", function() {
+          showDetails(m.id.toString());
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    async function addMachine(event) {
+      event.preventDefault();
+      const machine = {
+        name: document.getElementById("name").value,
+        type: document.getElementById("type").value,
+        status: document.getElementById("status").value,
+        location: document.getElementById("location").value,
+        description: document.getElementById("description").value,
+        image_url: document.getElementById("image_url").value,
+        created_by: localStorage.getItem("user_id")
+      };
+
+      const res = await fetch("http://127.0.0.1:5000/machines", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(machine)
+      });
+
+      if (res.ok) {
+        closeModal('addModal');
+        event.target.reset();
+        loadMachines();
+      } else {
+        alert("Failed to add machine. Check console for errors.");
+      }
+    }
+
+    async function showDetails(id) {
+      const res = await fetch(`http://127.0.0.1:5000/machines/${id}`);
+      const m = await res.json();
+
+      document.getElementById("detail-name").innerText = `${m.name} (${m.type})`;
+      document.getElementById("detail-status").innerText = `Status: ${m.status}`;
+      document.getElementById("detail-location").innerText = `Location: ${m.location || "N/A"}`;
+      document.getElementById("detail-description").innerText = m.description || "";
+
+      const reportRes = await fetch(`http://127.0.0.1:5000/machines/${id}/reports`);
+      const reports = reportRes.ok ? await reportRes.json() : { efficiency: 80, uptime: 90, downtime: 10, tasks_completed: 50 };
+
+      // ✅ Bar chart for uptime, downtime, efficiency, tasks completed
+      const ctxBar = document.getElementById('barChart').getContext('2d');
+      if (window.barChart) window.barChart.destroy();
+      window.barChart = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+          labels: ['Efficiency', 'Uptime', 'Downtime', 'Tasks Completed'],
+          datasets: [{
+            label: 'Machine Reports',
+            data: [reports.efficiency, reports.uptime, reports.downtime, reports.tasks_completed],
+            backgroundColor: [
+              'rgba(0, 200, 0, 0.7)',
+              'rgba(0, 123, 255, 0.7)',
+              'rgba(255, 0, 0, 0.7)',
+              'rgba(255, 206, 86, 0.7)'
+            ]
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      // ✅ Speedometer-style gauge for efficiency
+      const ctxGauge = document.getElementById('efficiencyGauge').getContext('2d');
+      if (window.gaugeChart) window.gaugeChart.destroy();
+      window.gaugeChart = new Chart(ctxGauge, {
+        type: 'doughnut',
+        data: {
+          labels: ['Efficiency', 'Remaining'],
+          datasets: [{
+            data: [reports.efficiency, 100 - reports.efficiency],
+            backgroundColor: [
+              reports.efficiency > 50 ? 'rgba(0, 200, 0, 0.8)' : 'rgba(255, 0, 0, 0.8)',
+              'rgba(200,200,200,0.3)'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          rotation: -90,
+          circumference: 180,
+          cutout: '70%',
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+          }
+        }
+      });
+
+      document.getElementById("detailModal").style.display = "flex";
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = "none";
+    }
+
+    window.onload = loadMachines;
+  </script>
+    <script>
+    // Supabase init
+    const SUPABASE_URL = "https://nerzmbcilthokuyqmtwj.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lcnptYmNpbHRob2t1eXFtdHdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4MDUzMjEsImV4cCI6MjA3MTM4MTMyMX0.HBou9bR3fezEuklwXmgH7cMLMwzPXH-ndm325TbkTIM";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+   const machineList = document.getElementById("machineList");
+    const modal = document.getElementById("machineModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalImage = document.getElementById("modalImage");
+    const modalDescription = document.getElementById("modalDescription");
+    const chartCanvas = document.getElementById("machineChart");
+    let chartInstance;
+
+    // ✅ Fetch machines from Supabase
+    async function loadMachines() {
+      let { data, error } = await supabase.from("machines").select("*");
+      if (error) {
+        console.error("Error fetching machines:", error);
+        return;
+      }
+      machineList.innerHTML = "";
+      data.forEach(machine => {
+        const card = document.createElement("div");
+        card.className = "machine-card";
+        card.innerHTML = `
+          <img src="${machine.image_url}" alt="${machine.name}">
+          <h3>${machine.name}</h3>
+          <p>${machine.short_desc || "Click to view details"}</p>
+        `;
+        card.addEventListener("click", () => openModal(machine));
+        machineList.appendChild(card);
+      });
+    }
+
+    // ✅ Open modal with details + graph
+    function openModal(machine) {
+      modalTitle.textContent = machine.name;
+      modalImage.src = machine.image_url;
+      modalDescription.textContent = machine.description || "No description available.";
+
+      // Example machine metrics for chart
+      const metrics = machine.metrics ? JSON.parse(machine.metrics) : { efficiency: 70, uptime: 85, errors: 15 };
+
+      // Destroy previous chart if exists
+      if (chartInstance) chartInstance.destroy();
+
+      chartInstance = new Chart(chartCanvas, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(metrics),
+          datasets: [{
+            label: 'Performance',
+            data: Object.values(metrics),
+            backgroundColor: ['#4CAF50', '#2196F3', '#F44336']
+          }]
+        }
+      });
+
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    // Close modal on outside click
+    window.onclick = function(event) {
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+
+    // ✅ Load on page start
+    loadMachines();
+  </script>
+</body>
+</html>

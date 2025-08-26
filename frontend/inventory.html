@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Industrial Management Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        display: flex;
+        min-height: 100vh;
+        background-color: #c7e0f7;
+        color: #333;
+      }
+
+      .sidebar {
+        width: 280px;
+        background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
+        color: white;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .logo-container {
+        padding: 30px 25px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .logo span {
+        color: #3498db;
+      }
+
+      .nav-items {
+        padding: 30px 0;
+        flex: 1;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 16px 25px;
+        margin: 8px 15px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        color: #e6e6e6;
+      }
+
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(5px);
+      }
+
+      .nav-item.active {
+        background: linear-gradient(90deg, #3498db 0%, #2c78bf 100%);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-item i {
+        margin-right: 15px;
+        font-size: 20px;
+        width: 24px;
+        text-align: center;
+      }
+
+      .sidebar-footer {
+        padding: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+        font-size: 12px;
+        color: #aaa;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        color: #2c3e50;
+        font-weight: 600;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .card h2 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+        font-size: 18px;
+      }
+
+      @media (max-width: 992px) {
+        .sidebar {
+          width: 80px;
+          transform: translateX(0);
+        }
+
+        .logo-container {
+          padding: 25px 10px;
+        }
+
+        .logo {
+          font-size: 16px;
+          writing-mode: vertical-rl;
+          text-orientation: mixed;
+          transform: rotate(180deg);
+        }
+
+        .logo-text {
+          display: none;
+        }
+
+        .nav-item span {
+          display: none;
+        }
+
+        .nav-item i {
+          margin-right: 0;
+          font-size: 24px;
+        }
+
+        .nav-item {
+          justify-content: center;
+          padding: 20px 15px;
+          margin: 8px 10px;
+        }
+
+        .sidebar-footer {
+          display: none;
+        }
+
+        .main-content {
+          margin-left: 80px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .dashboard-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .nav-items a {
+        text-decoration: none;
+      }
+
+      /* Main content */
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      header {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      header h1 {
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .manager-access {
+        background: #3498db;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .content {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .inventory-section,
+      .products-section {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .search-bar {
+        position: relative;
+        margin-bottom: 15px;
+        max-width: 300px;
+      }
+
+      .search-bar input {
+        width: 100%;
+        padding: 10px 15px 10px 35px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .search-bar i {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #777;
+      }
+
+      .table-container {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      tr:hover {
+        background-color: #f8f9fa;
+      }
+
+      .btn-primary {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: background 0.3s;
+      }
+
+      .btn-primary:hover {
+        background: #2980b9;
+      }
+
+      .btn-secondary {
+        background: #95a5a6;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: background 0.3s;
+      }
+
+      .btn-secondary:hover {
+        background: #7f8c8d;
+      }
+
+      .action-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #3498db;
+        margin-right: 10px;
+      }
+
+      .action-btn:hover {
+        color: #2980b9;
+      }
+
+      .action-btn.delete {
+        color: #e74c3c;
+      }
+
+      .action-btn.delete:hover {
+        color: #c0392b;
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 0;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        max-height: 85vh;
+            overflow-y: auto;
+
+    }
+
+      .modal-header {
+        padding: 15px 20px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .modal-header h3 {
+        color: #2c3e50;
+      }
+
+      .close {
+        color: #aaa;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover {
+        color: #333;
+      }
+
+      form {
+        padding: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #2c3e50;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      @media (min-width: 992px) {
+        .content {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .container {
+        max-width: calc(100% - 280px);
+        margin-left: 280px;
+        padding: 20px;
+      }
+
+      @media (max-width: 992px) {
+        .container {
+          max-width: calc(100% - 80px);
+          margin-left: 80px;
+        }
+      }
+      .batch-section {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        grid-column: 1 / -1;
+      }
+
+      .filters {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+
+      .filters select,
+      .filters input {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .status-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .status-active {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+      }
+
+      .status-expired {
+        background-color: #ffebee;
+        color: #c62828;
+      }
+
+      .status-sold {
+        background-color: #fff3e0;
+        color: #ef6c00;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo-container">
+        <div class="logo">INDUSTRI<span>PRO</span></div>
+      </div>
+
+      <div class="nav-items">
+        <a href="machines.html">
+          <div class="nav-item active">
+            <i class="fas fa-microchip"></i>
+            <span>Machines</span>
+          </div>
+        </a>
+        <a href="orders.html">
+          <div class="nav-item">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Orders</span>
+          </div>
+        </a>
+        <a href="inventory.html">
+          <div class="nav-item">
+            <i class="fas fa-boxes"></i>
+            <span>Inventory</span>
+          </div>
+        </a>
+        <a href="employee.html">
+          <div class="nav-item">
+            <i class="fas fa-user-tie"></i>
+            <span>Employee</span>
+          </div>
+        </a>
+        <a href="profiles.html">
+          <div class="nav-item">
+            <i class="fas fa-id-card"></i>
+            <span>Profiles</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <p>© 2023 IndustriPro Management System</p>
+        <p>v2.4.1</p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+      <header>
+        <h1><i class="fas fa-boxes"></i> Inventory Management</h1>
+        <p class="manager-access">Manager Access Only</p>
+      </header>
+
+      <div class="content">
+        <!-- Current Inventory Section -->
+        <section class="inventory-section">
+          <h2>Current Inventory</h2>
+          <div class="search-bar">
+            <input
+              type="text"
+              id="searchInventory"
+              placeholder="Search inventory..."
+            />
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="table-container">
+            <table id="inventoryTable">
+              <thead>
+                <tr>
+                  <th>Product Name</th>
+                  <th>Quantity</th>
+                  <th>Cost Price</th>
+                  <th>Selling Price</th>
+                  <th>UOM</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Inventory data will be populated here -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- All Products Section -->
+        <section class="products-section">
+          <h2>All Products</h2>
+          <div class="search-bar">
+            <input
+              type="text"
+              id="searchProducts"
+              placeholder="Search products..."
+            />
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="table-container">
+            <table id="productsTable">
+              <thead>
+                <tr>
+                  <th>Product Name</th>
+                  <th>Cost Price</th>
+                  <th>Selling Price</th>
+                  <th>UOM</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Product data will be populated here -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Add Product Button -->
+          <button id="addProductBtn" class="btn-primary">
+            <i class="fas fa-plus"></i> Add New Product
+          </button>
+        </section>
+
+        <!-- Batchwise Inventory Report Section -->
+        <section class="batch-section">
+          <h2><i class="fas fa-file-alt"></i> Batchwise Inventory Report</h2>
+          <div class="search-bar">
+            <input
+              type="text"
+              id="searchBatch"
+              placeholder="Search by batch ID, product..."
+            />
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="filters">
+            <select id="filterProduct">
+              <option value="">All Products</option>
+            </select>
+            <select id="filterMachne">
+              <option value="">All Machines</option>
+            </select>
+            <input type="date" id="filterDate" />
+            <!-- NEW: date+time filter -->
+            <input type="datetime-local" id="filterDateTime" />
+            <button id="fetchBatchesBtn" class="btn-primary">
+              <i class="fas fa-filter"></i> Apply Filters
+            </button>
+            <button id="resetBatchesBtn" class="btn-secondary">
+              <i class="fas fa-undo"></i> Reset
+            </button>
+          </div>
+          <div class="table-container">
+            <table id="batchTable">
+              <thead>
+                <tr>
+                  <th>Batch ID</th>
+                  <th>Product Name</th>
+                  <th>Machine</th>
+                  <th>Quantity</th>
+                  <th>Manufacturing Date</th>
+                  <th>Expiry Date</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Batch data will be populated here -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Add Product Modal -->
+      <div id="productModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Add New Product</h3>
+            <span class="close">&times;</span>
+          </div>
+          <form id="productForm">
+            <div class="form-group">
+             <label for="batch_id">Batch ID</label>
+            <input type="text" id="batch_id" required>
+            </div>
+            <div class="form-group">
+              <label for="prod_name">Product Name</label>
+              <input type="text" id="prod_name" name="prod_name" required />
+            </div>
+            <div class="form-group">
+    <label for="machine">Machine</label>
+    <input type="text" id="machine" required>
+</div>
+
+<div class="form-group">
+    <label for="mfg_date">Manufacturing Date</label>
+    <input type="date" id="mfg_date" required>
+</div>
+
+<div class="form-group">
+    <label for="mfg_time">Manufacturing Time</label>
+    <input type="time" id="mfg_time" required>
+</div>
+
+<div class="form-group">
+    <label for="exp_date">Expiry Date</label>
+    <input type="date" id="exp_date" required>
+</div>
+            <div class="form-group">
+              <label for="cost_price">Cost Price ($)</label>
+              <input
+                type="number"
+                id="cost_price"
+                name="cost_price"
+                min="0"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="selling_price">Selling Price ($)</label>
+              <input
+                type="number"
+                id="selling_price"
+                name="selling_price"
+                min="0"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="uom">Unit of Measure (UOM)</label>
+              <select id="uom" name="uom" required>
+                <option value="">Select UOM</option>
+                <option value="Piece">Piece</option>
+                <option value="Kilogram">Kilogram</option>
+                <option value="Liter">Liter</option>
+                <option value="Meter">Meter</option>
+                <option value="Box">Box</option>
+                <option value="Pack">Pack</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" id="cancelBtn">
+                Cancel
+              </button>
+              <button type="submit" class="btn-primary">Add Product</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supabase JS (v2) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      // ---------- SUPABASE CONFIG ----------
+      const SUPABASE_URL = "https://nerzmbcilthokuyqmtwj.supabase.co";
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lcnptYmNpbHRob2t1eXFtdHdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4MDUzMjEsImV4cCI6MjA3MTM4MTMyMX0.HBou9bR3fezEuklwXmgH7cMLMwzPXH-ndm325TbkTIM";
+      const supabase = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+
+       // ---------- STATE ----------
+  let inventoryData = []; // from Supabase
+
+  // ---------- DOM ELEMENTS ----------
+  const inventoryTable = document.getElementById("inventoryTable");
+  const productsTable = document.getElementById("productsTable");
+  const batchTable = document.getElementById("batchTable");
+  const addProductBtn = document.getElementById("addProductBtn");
+  const modal = document.getElementById("productModal");
+  const closeBtn = document.querySelector(".close");
+  const cancelBtn = document.getElementById("cancelBtn");
+  const productForm = document.getElementById("productForm");
+
+  const searchInventory = document.getElementById("searchInventory");
+  const searchProducts = document.getElementById("searchProducts");
+  const searchBatch = document.getElementById("searchBatch");
+  const filterProduct = document.getElementById("filterProduct");
+  const filterMachine = document.getElementById("filterMachne");
+  const filterDate = document.getElementById("filterDate");
+  const filterDateTime = document.getElementById("filterDateTime");
+  const fetchBatchesBtn = document.getElementById("fetchBatchesBtn");
+  const resetBatchesBtn = document.getElementById("resetBatchesBtn");
+
+  // ---------- INIT ----------
+  document.addEventListener("DOMContentLoaded", async () => {
+    await loadInventory();
+    renderAll();
+
+    addProductBtn.addEventListener("click", openModal);
+    closeBtn.addEventListener("click", closeModal);
+    cancelBtn.addEventListener("click", closeModal);
+    productForm.addEventListener("submit", handleFormSubmit);
+
+    searchInventory.addEventListener("input", renderInventoryTable);
+    searchProducts.addEventListener("input", renderProductsTable);
+    searchBatch.addEventListener("input", renderBatchTable);
+
+    filterProduct.addEventListener("change", renderBatchTable);
+    filterMachine.addEventListener("change", renderBatchTable);
+    filterDate.addEventListener("change", renderBatchTable);
+    filterDateTime.addEventListener("change", renderBatchTable);
+
+    fetchBatchesBtn.addEventListener("click", renderBatchTable);
+    resetBatchesBtn.addEventListener("click", async () => {
+      searchBatch.value = "";
+      filterProduct.value = "";
+      filterMachine.value = "";
+      filterDate.value = "";
+      filterDateTime.value = "";
+      await loadInventory();
+      renderAll();
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+  });
+
+  // ---------- LOAD DATA ----------
+  async function loadInventory() {
+    const { data, error } = await supabase.from("inventory").select("*").order("created_at", { ascending: false });
+    if (error) {
+      console.error("Error loading inventory:", error);
+      return;
+    }
+    inventoryData = data || [];
+  }
+
+  // ---------- FORM SUBMIT ----------
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+
+    const batch_id = document.getElementById("batch_id").value.trim();
+    const product_name = document.getElementById("prod_name").value.trim();
+    const machine = document.getElementById("machine").value.trim();
+    const mfg_date = document.getElementById("mfg_date").value;
+    const mfg_time = document.getElementById("mfg_time").value;
+    const exp_date = document.getElementById("exp_date").value;
+    const cost_price = parseFloat(document.getElementById("cost_price").value);
+    const selling_price = parseFloat(document.getElementById("selling_price").value);
+    const uom = document.getElementById("uom").value;
+
+    const mfg_datetime = mfg_date && mfg_time ? `${mfg_date}T${mfg_time}:00Z` : null;
+
+    const { error } = await supabase.from("inventory").insert([{
+      batch_id,
+      product_name,
+      machine,
+      mfg_datetime,
+      exp_date,
+      cost_price,
+      selling_price,
+      uom,
+      quantity: 0
+    }]);
+
+    if (error) {
+      console.error(error);
+      alert("❌ Error saving product!");
+      return;
+    }
+
+    alert("✅ Product/Batch added!");
+    productForm.reset();
+    closeModal();
+    await loadInventory();
+    renderAll();
+  }
+
+  // ---------- RENDER ----------
+  function renderAll() {
+    renderInventoryTable();
+    renderProductsTable();
+    renderBatchTable();
+    populateBatchFilters();
+  }
+
+  function renderInventoryTable() {
+    const tbody = inventoryTable.querySelector("tbody");
+    tbody.innerHTML = "";
+    let filtered = filterBySearch(inventoryData, searchInventory.value, ["product_name"]);
+    filtered.forEach((item) => {
+      const value = ((item.quantity || 0) * (item.cost_price ?? 0)).toFixed(2);
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${escapeHtml(item.product_name)}</td>
+        <td>${Number(item.quantity || 0)}</td>
+        <td>$${Number(item.cost_price ?? 0).toFixed(2)}</td>
+        <td>$${Number(item.selling_price ?? 0).toFixed(2)}</td>
+        <td>${escapeHtml(item.uom || "")}</td>
+        <td>$${value}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  function renderProductsTable() {
+    const tbody = productsTable.querySelector("tbody");
+    tbody.innerHTML = "";
+    let seen = new Set();
+    let filtered = filterBySearch(inventoryData, searchProducts.value, ["product_name"]);
+    filtered.forEach((item) => {
+      if (seen.has(item.product_name)) return;
+      seen.add(item.product_name);
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${escapeHtml(item.product_name)}</td>
+        <td>$${Number(item.cost_price ?? 0).toFixed(2)}</td>
+        <td>$${Number(item.selling_price ?? 0).toFixed(2)}</td>
+        <td>${escapeHtml(item.uom || "")}</td>
+        <td>
+          <button class="action-btn edit" data-id="${item.id}">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="action-btn delete" data-id="${item.id}">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  function renderBatchTable() {
+    const tbody = batchTable.querySelector("tbody");
+    tbody.innerHTML = "";
+    let filtered = filterBySearch(inventoryData, searchBatch.value, ["batch_id","product_name","machine"]);
+
+    filtered = filtered.filter((item) => {
+      if (filterProduct.value && item.product_name !== filterProduct.value) return false;
+      if (filterMachine.value && item.machine !== filterMachine.value) return false;
+      if (filterDate.value) {
+        const d = new Date(item.mfg_datetime);
+        if (!d || d.toISOString().slice(0,10) !== filterDate.value) return false;
+      }
+      if (filterDateTime.value) {
+        const dt = new Date(item.mfg_datetime);
+        const filterDt = new Date(filterDateTime.value);
+        if (!dt || dt.toISOString() !== filterDt.toISOString()) return false;
+      }
+      return true;
+    });
+
+    filtered.forEach((batch) => {
+      const mfg = batch.mfg_datetime ? new Date(batch.mfg_datetime) : null;
+      const exp = batch.exp_date ? new Date(batch.exp_date) : null;
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${escapeHtml(batch.batch_id)}</td>
+        <td>${escapeHtml(batch.product_name)}</td>
+        <td>${escapeHtml(batch.machine || "")}</td>
+        <td>${Number(batch.quantity || 0)}</td>
+        <td>${mfg ? formatDate(mfg) : "-"}</td>
+        <td>${exp ? formatDate(exp) : "-"}</td>
+        <td>${mfg ? formatTime(mfg) : "-"}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  // ---------- HELPERS ----------
+  function openModal() { modal.style.display = "block"; }
+  function closeModal() { modal.style.display = "none"; }
+
+  function escapeHtml(str) {
+    if (!str) return "";
+    return str.replace(/[&<>"']/g, (m) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+    }[m]));
+  }
+
+  function formatDate(date) {
+    return date.toISOString().slice(0, 10);
+  }
+  function formatTime(date) {
+    return date.toISOString().slice(11, 16);
+  }
+
+  function filterBySearch(data, searchVal, keys) {
+    if (!searchVal) return data;
+    searchVal = searchVal.toLowerCase();
+    return data.filter(item =>
+      keys.some(k => (item[k] || "").toString().toLowerCase().includes(searchVal))
+    );
+  }
+
+  function populateBatchFilters() {
+    const products = [...new Set(inventoryData.map(i => i.product_name))];
+    const machines = [...new Set(inventoryData.map(i => i.machine))];
+    filterProduct.innerHTML = `<option value="">All Products</option>` + products.map(p=>`<option value="${p}">${p}</option>`).join("");
+    filterMachine.innerHTML = `<option value="">All Machines</option>` + machines.map(m=>`<option value="${m}">${m}</option>`).join("");
+  }
+
+    </script>
+  </body>
+</html>

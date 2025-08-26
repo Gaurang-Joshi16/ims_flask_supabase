@@ -1,0 +1,519 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndustryPro | Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: #f1f5f9;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .auth-container {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            min-height: 600px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        
+        .auth-left {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.9) 0%, rgba(16, 185, 129, 0.85) 100%), url('https://images.unsplash.com/photo-1590065480004-477ef6d4d5de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .auth-left-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .auth-left h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .auth-left p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .auth-features {
+            list-style: none;
+            margin-top: 2rem;
+        }
+        
+        .auth-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+        
+        .auth-features i {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .auth-right {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .auth-header h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-header p {
+            color: var(--gray);
+        }
+        
+        .role-selection {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .role-btn {
+            flex: 1;
+            padding: 1.2rem;
+            background: var(--light);
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .role-btn:hover {
+            border-color: var(--primary);
+        }
+        
+        .role-btn.active {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.05);
+        }
+        
+        .role-btn i {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            display: block;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .password-toggle {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.25);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+            box-shadow: 0 4px 6px rgba(245, 158, 11, 0.2);
+        }
+        
+        .btn-accent:hover {
+            background-color: #e5900b;
+            box-shadow: 0 6px 12px rgba(245, 158, 11, 0.25);
+        }
+        
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: var(--gray);
+        }
+        
+        .auth-divider:before,
+        .auth-divider:after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--light-gray);
+        }
+        
+        .auth-divider span {
+            padding: 0 1rem;
+        }
+        
+        .social-login {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-btn:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+        
+        .social-btn i {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+        
+        .google-btn {
+            color: #DB4437;
+        }
+        
+        .microsoft-btn {
+            color: #0078D7;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--gray);
+        }
+        
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+                max-width: 90%;
+                margin: 2rem auto;
+            }
+            
+            .auth-left {
+                padding: 2rem;
+                text-align: center;
+            }
+            
+            .auth-right {
+                padding: 2rem;
+            }
+            
+            .role-selection {
+                flex-direction: column;
+            }
+            
+            .social-login {
+                flex-direction: column;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animated {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-left">
+                <div class="auth-left-content">
+                    <h2>IndustryPro Management System</h2>
+                    <p>Streamline your industrial operations with our comprehensive management platform.</p>
+                    
+                    <ul class="auth-features">
+                        <li><i class="fas fa-cogs"></i> Monitor machinery status in real-time</li>
+                        <li><i class="fas fa-boxes"></i> Manage inventory and orders efficiently</li>
+                        <li><i class="fas fa-users"></i> Optimize workforce productivity</li>
+                        <li><i class="fas fa-chart-line"></i> Track performance with advanced analytics</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="auth-right">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to access your dashboard</p>
+                </div>
+                
+                <div class="role-selection">
+                    <div class="role-btn active" id="manager-btn">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Manager</span>
+                    </div>
+                    <div class="role-btn" id="employee-btn">
+                        <i class="fas fa-user"></i>
+                        <span>Employee</span>
+                    </div>
+                </div>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" class="form-control" placeholder="Enter your username" required>
+                    </div>
+                    
+                    <div class="form-group password-toggle">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                        <button type="button" class="toggle-password" id="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="remember-forgot">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn">Sign In</button>
+                </form>
+                
+                <!-- <div class="auth-divider">
+                    <span>Or continue with</span>
+                </div>
+                
+                <div class="social-login">
+                    <button class="social-btn google-btn">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button class="social-btn microsoft-btn">
+                        <i class="fab fa-microsoft"></i> Microsoft
+                    </button>
+                </div> -->
+                
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="signup.html" id="signup-link">Sign up here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Role selection
+            const managerBtn = document.getElementById('manager-btn');
+            const employeeBtn = document.getElementById('employee-btn');
+            
+            managerBtn.addEventListener('click', function() {
+                managerBtn.classList.add('active');
+                employeeBtn.classList.remove('active');
+                document.querySelector('.auth-header h2').textContent = 'Manager Login';
+            });
+            
+            employeeBtn.addEventListener('click', function() {
+                employeeBtn.classList.add('active');
+                managerBtn.classList.remove('active');
+                document.querySelector('.auth-header h2').textContent = 'Employee Login';
+            });
+            
+            // Toggle password visibility
+            const togglePassword = document.getElementById('toggle-password');
+            const passwordInput = document.getElementById('password');
+            
+            togglePassword.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    togglePassword.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    togglePassword.innerHTML = '<i class="fas fa-eye"></i>';
+                }
+            });
+            
+            // Form submission
+            const loginForm = document.getElementById('login-form');
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const isManager = managerBtn.classList.contains('active');
+                
+                // Simple validation
+                if (!username || !password) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                // Simulate login process
+                const role = isManager ? 'Manager' : 'Employee';
+                alert(`Login successful! Welcome ${username}. Redirecting to ${role} dashboard...`);
+                
+                // Here you would typically redirect to the actual dashboard
+                // window.location.href = isManager ? 'manager-dashboard.html' : 'employee-dashboard.html';
+            });
+            
+            // Switch to signup
+            const signupLink = document.getElementById('signup-link');
+            
+            signupLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Redirecting to sign up page...');
+                // window.location.href = 'signup.html';
+            });
+        });
+    </script>
+</body>
+</html>
